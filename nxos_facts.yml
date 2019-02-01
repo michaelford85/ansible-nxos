@@ -1,0 +1,9 @@
+---
+- name: Gather Facts
+  hosts: 192.168.224.140
+  connection: network_cli
+  gather_facts: no
+
+  tasks:
+  - name: Gather NXOS Facts
+    nxos_facts:
