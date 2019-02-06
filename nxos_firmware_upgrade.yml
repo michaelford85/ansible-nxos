@@ -4,8 +4,8 @@
   connection: network_cli
   gather_facts: no
   vars:
-    ansible_persistent_connect_timeout: 600
-    ansible_persistent_command_timeout: 600
+    connect_timeout: 600
+    command_timeout: 600
     compliant_nxos_version: 16.08.01a
 
   tasks:
@@ -17,6 +17,16 @@
         msg: "Nothing to upgrade"
       when: compliant_nxos_version == ansible_net_version
 
+    # The scp server has to be enabled to transfer the configuration file to
+    # the remote device in order to load it onto the device
+    - name: enable the nxos scp server
+      cli_config:
+        config: "feature scp-server"
+
+    #NXOS-specific command to enable scp server
+    # - name: enable the nxos scp server
+    #   nxos_config:
+    #     lines: feature scp-server
 
     - name: COPY OVER NXOS IMAGE
       net_put:
@@ -31,6 +41,15 @@
         dest: bootflash:system-image-filename.bin
 
     # - name: WAIT FOR FILE TO BE COPIED OVER
+
+    - name: disable the nxos scp server
+      cli_config:
+        config: "no feature scp-server"
+
+    #NXOS-specific command to disable scp server
+    # - name: disable the nxos scp server
+    #   nxos_config:
+    #     lines: no feature scp-server
 
     - name: run multiple commands and evaluate the output
       nxos_command:
