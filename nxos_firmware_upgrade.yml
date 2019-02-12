@@ -23,33 +23,30 @@
       cli_config:
         config: "feature scp-server"
 
-    #NXOS-specific command to enable scp server
-    # - name: enable the nxos scp server
-    #   nxos_config:
-    #     lines: feature scp-server
-
     - name: COPY OVER NXOS IMAGE
-      net_put:
-        src: ./firmware/ios/system-image-filename.bin
-        dest: bootflash:system-image-filename.bin
+      nxos_file_copy:
+        file_pull: True
+        local_file: "system-image-filename.bin"
+        local_filr_directory: "bootflash:"
+        remote_file: "/firmware/ios/system-image-filename.bin"
+        remote_scp_server: "192.168.0.1"
+        remote_scp_server_user: "myUser"
+        remote_scp_server_password: "myPassword"
+
 
     # - name: WAIT FOR FILE TO BE COPIED OVER
 
     - name: COPY OVER NXOS KICKSTART IMAGE
-      net_put:
-        src: ./firmware/ios/system-image-filename.bin
-        dest: bootflash:system-image-filename.bin
+      nxos_file_copy:
+        file_pull: True
+        local_file: "system-kickstart_image-filename.bin"
+        local_filr_directory: "bootflash"
+        remote_file: "/firmware/ios/system-kickstart_image-filename.bin"
+        remote_scp_server: "192.168.0.1"
+        remote_scp_server_user: "myUser"
+        remote_scp_server_password: "myPassword"
 
     # - name: WAIT FOR FILE TO BE COPIED OVER
-
-    - name: disable the nxos scp server
-      cli_config:
-        config: "no feature scp-server"
-
-    #NXOS-specific command to disable scp server
-    # - name: disable the nxos scp server
-    #   nxos_config:
-    #     lines: no feature scp-server
 
     - name: run multiple commands and evaluate the output
       nxos_command:
@@ -64,7 +61,7 @@
           kickstart_image_file: n3500-uk9-kickstart.6.0.2.A8.10a.bin
       when: nxos_command_output.results[0].find("FAILED") == -1
 
-    - rescue:
+      rescue:
 
       - name: WAITING FOR DEVICE TO PERFORM ALL UPGRADE CHECKS AND STARTS REBOOT
         wait_for:

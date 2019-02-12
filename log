@@ -1,0 +1,103 @@
+2019-02-12 14:40:11,736 p=29808 u=mford |   [WARNING]:  * Failed to parse /Users/mford/Documents/github-workspace/ansible-nxos/hosts with
+yaml plugin: Syntax Error while loading YAML.   expected '<document start>', but found
+'<scalar>'  The error appears to have been in '/Users/mford/Documents/github-workspace
+/ansible-nxos/hosts': line 3, column 1, but may be elsewhere in the file depending on the
+exact syntax problem.  The offending line appears to be:   18.234.61.158 ansible_user=ec2-user
+ansible_ssh_private_key_file=~/.ssh/MAF-ios-demo-private.pem ^ here
+
+2019-02-12 14:40:11,737 p=29808 u=mford |   [WARNING]:  * Failed to parse /Users/mford/Documents/github-workspace/ansible-nxos/hosts with
+ini plugin: /Users/mford/Documents/github-workspace/ansible-nxos/hosts:12: Section
+[cisco:vars] not valid for undefined group: cisco
+
+2019-02-12 14:40:11,737 p=29808 u=mford |   [WARNING]: Unable to parse /Users/mford/Documents/github-workspace/ansible-nxos/hosts as an
+inventory source
+
+2019-02-12 14:40:11,737 p=29808 u=mford |   [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2019-02-12 14:40:11,742 p=29808 u=mford |   [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit
+localhost does not match 'all'
+
+2019-02-12 14:40:11,765 p=29808 u=mford |  ERROR! Syntax Error while loading YAML.
+  expected <block end>, but found '<scalar>'
+
+The error appears to have been in '/Users/mford/Documents/github-workspace/ansible-nxos/nxos_firmware_upgrade.yml': line 49, column 22, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+        file_pull: True
+        local_file: "system-kickstart_image-filename.bin"
+                     ^ here
+
+2019-02-12 14:41:41,017 p=29820 u=mford |   [WARNING]:  * Failed to parse /Users/mford/Documents/github-workspace/ansible-nxos/hosts with
+yaml plugin: Syntax Error while loading YAML.   expected '<document start>', but found
+'<scalar>'  The error appears to have been in '/Users/mford/Documents/github-workspace
+/ansible-nxos/hosts': line 3, column 1, but may be elsewhere in the file depending on the
+exact syntax problem.  The offending line appears to be:   18.234.61.158 ansible_user=ec2-user
+ansible_ssh_private_key_file=~/.ssh/MAF-ios-demo-private.pem ^ here
+
+2019-02-12 14:41:41,018 p=29820 u=mford |   [WARNING]:  * Failed to parse /Users/mford/Documents/github-workspace/ansible-nxos/hosts with
+ini plugin: /Users/mford/Documents/github-workspace/ansible-nxos/hosts:12: Section
+[cisco:vars] not valid for undefined group: cisco
+
+2019-02-12 14:41:41,018 p=29820 u=mford |   [WARNING]: Unable to parse /Users/mford/Documents/github-workspace/ansible-nxos/hosts as an
+inventory source
+
+2019-02-12 14:41:41,018 p=29820 u=mford |   [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2019-02-12 14:41:41,022 p=29820 u=mford |   [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit
+localhost does not match 'all'
+
+2019-02-12 14:41:41,291 p=29820 u=mford |  ERROR! 'rescue' keyword cannot be used without 'block'
+
+The error appears to have been in '/Users/mford/Documents/github-workspace/ansible-nxos/nxos_firmware_upgrade.yml': line 64, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+
+    - rescue:
+      ^ here
+
+2019-02-12 14:42:19,277 p=29830 u=mford |   [WARNING]:  * Failed to parse /Users/mford/Documents/github-workspace/ansible-nxos/hosts with
+yaml plugin: Syntax Error while loading YAML.   expected '<document start>', but found
+'<scalar>'  The error appears to have been in '/Users/mford/Documents/github-workspace
+/ansible-nxos/hosts': line 3, column 1, but may be elsewhere in the file depending on the
+exact syntax problem.  The offending line appears to be:   18.234.61.158 ansible_user=ec2-user
+ansible_ssh_private_key_file=~/.ssh/MAF-ios-demo-private.pem ^ here
+
+2019-02-12 14:42:19,277 p=29830 u=mford |   [WARNING]:  * Failed to parse /Users/mford/Documents/github-workspace/ansible-nxos/hosts with
+ini plugin: /Users/mford/Documents/github-workspace/ansible-nxos/hosts:12: Section
+[cisco:vars] not valid for undefined group: cisco
+
+2019-02-12 14:42:19,278 p=29830 u=mford |   [WARNING]: Unable to parse /Users/mford/Documents/github-workspace/ansible-nxos/hosts as an
+inventory source
+
+2019-02-12 14:42:19,278 p=29830 u=mford |   [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2019-02-12 14:42:19,281 p=29830 u=mford |   [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit
+localhost does not match 'all'
+
+2019-02-12 14:42:19,533 passlib.registry registered 'md5_crypt' handler: <class 'passlib.handlers.md5_crypt.md5_crypt'>
+2019-02-12 14:42:19,537 p=29830 u=mford |  playbook: nxos_firmware_upgrade.yml
+2019-02-12 14:42:39,125 p=29840 u=mford |   [WARNING]:  * Failed to parse /Users/mford/Documents/github-workspace/ansible-nxos/hosts with
+yaml plugin: Syntax Error while loading YAML.   expected '<document start>', but found
+'<scalar>'  The error appears to have been in '/Users/mford/Documents/github-workspace
+/ansible-nxos/hosts': line 3, column 1, but may be elsewhere in the file depending on the
+exact syntax problem.  The offending line appears to be:   18.234.61.158 ansible_user=ec2-user
+ansible_ssh_private_key_file=~/.ssh/MAF-ios-demo-private.pem ^ here
+
+2019-02-12 14:42:39,125 p=29840 u=mford |   [WARNING]:  * Failed to parse /Users/mford/Documents/github-workspace/ansible-nxos/hosts with
+ini plugin: /Users/mford/Documents/github-workspace/ansible-nxos/hosts:12: Section
+[cisco:vars] not valid for undefined group: cisco
+
+2019-02-12 14:42:39,125 p=29840 u=mford |   [WARNING]: Unable to parse /Users/mford/Documents/github-workspace/ansible-nxos/hosts as an
+inventory source
+
+2019-02-12 14:42:39,126 p=29840 u=mford |   [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2019-02-12 14:42:39,129 p=29840 u=mford |   [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit
+localhost does not match 'all'
+
+2019-02-12 14:42:39,354 passlib.registry registered 'md5_crypt' handler: <class 'passlib.handlers.md5_crypt.md5_crypt'>
+2019-02-12 14:42:39,358 p=29840 u=mford |  playbook: nxos_firmware_upgrade.yml
