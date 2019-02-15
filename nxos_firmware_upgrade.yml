@@ -46,6 +46,10 @@
         remote_scp_server_user: "myUser"
         remote_scp_server_password: "myPassword"
 
+   - name: COPY OVER NXOS KICKSTART IMAGE
+     cli_command:
+       command: "copy scp://{{remote_user}}@{{remote_server}}/{{remote_file}} bootflash/{{filename}} vrf {{management}}"
+
     # - name: WAIT FOR FILE TO BE COPIED OVER
 
     - name: run multiple commands and evaluate the output
