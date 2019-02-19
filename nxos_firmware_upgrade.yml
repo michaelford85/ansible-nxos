@@ -7,66 +7,61 @@
     connect_timeout: 600
     command_timeout: 600
     compliant_nxos_version: 16.08.01a
+    os_file: "/firmware/nxos/system-image-filename.bin"
+    kickstart_file: "/firmware/nxos/kickstart-filename.bin"
 
   tasks:
-    - name: GATHER ROUTER FACTS
+    - name: Gather switch facts
       nxos_facts:
 
-    - name: CHECK WHETHER CORRECT OS IS ALREADY INSTALLED
+    - name: Check whether correct OS is already installed
       fail:
         msg: "Nothing to upgrade"
       when: compliant_nxos_version == ansible_net_version
 
-    # The scp server has to be enabled to transfer the configuration file to
-    # the remote device in order to load it onto the device
-    - name: enable the nxos scp server
-      cli_config:
-        config: "feature scp-server"
-
-    - name: COPY OVER NXOS IMAGE
-      nxos_file_copy:
-        file_pull: True
-        local_file: "system-image-filename.bin"
-        local_filr_directory: "bootflash:"
-        remote_file: "/firmware/ios/system-image-filename.bin"
-        remote_scp_server: "192.168.0.1"
-        remote_scp_server_user: "myUser"
-        remote_scp_server_password: "myPassword"
-
-
-    # - name: WAIT FOR FILE TO BE COPIED OVER
-
-    - name: COPY OVER NXOS KICKSTART IMAGE
-      nxos_file_copy:
-        file_pull: True
-        local_file: "system-kickstart_image-filename.bin"
-        local_filr_directory: "bootflash"
-        remote_file: "/firmware/ios/system-kickstart_image-filename.bin"
-        remote_scp_server: "192.168.0.1"
-        remote_scp_server_user: "myUser"
-        remote_scp_server_password: "myPassword"
-
-   - name: COPY OVER NXOS KICKSTART IMAGE
+   - name: Copy over nxos os image file
      cli_command:
-       command: "copy scp://{{remote_user}}@{{remote_server}}/{{remote_file}} bootflash/{{filename}} vrf {{management}}"
-       prompt: "{{username}}@{{remote_IP}}'s password:"
-       answer: {{password}}
+       command: "copy scp://{{remote_user}}@{{remote_server}}/{{os_file}} bootflash/{{filename}} vrf {{management}}"
+       prompt:
+         - "{{username}}@"
+       answer:
+         - "{{scp_password}}"
+
+   - name: Copy over nxos kickstart file
+     cli_command:
+       command: "copy scp://{{remote_user}}@{{remote_server}}/{{kickstart_file}} bootflash/{{filename}} vrf {{management}}"
+       prompt:
+         - "{{username}}@"
+       answer:
+         - "{{scp_password}}"
 
 
-    # - name: WAIT FOR FILE TO BE COPIED OVER
+    # - name: run multiple commands and evaluate the output
+    #   nxos_command:
+    #     commands:
+    #       - show install all impact kickstart n3500-uk9-kickstart.6.0.2.A8.10a.bin system n3500-uk9.6.0.2.A8.10a.bin
+    #   register: nxos_command_output
 
-    - name: run multiple commands and evaluate the output
+    - name: Check MD5 Sum of os image file
       nxos_command:
         commands:
-          - show install all impact kickstart n3500-uk9-kickstart.6.0.2.A8.10a.bin system n3500-uk9.6.0.2.A8.10a.bin
-      register: nxos_command_output
+          - "show file bootflash:{{os_file}} md5sum"
+      register: os_output
+
+    - name: Check MD5 Sum of kickstart file
+      nxos_command:
+        commands:
+          - "show file bootflash:{{kickstart_file}} md5sum"
+      register: kickstart_output
 
     - block:
       - name: INSTALL NXOS OS
         nxos_install_os:
           system_image_file: n3500-uk9.6.0.2.A8.10a.bin
           kickstart_image_file: n3500-uk9-kickstart.6.0.2.A8.10a.bin
-      when: nxos_command_output.results[0].find("FAILED") == -1
+      when:
+        - kickstart_output['results'][0]['stdout'][0]['file_content_md5sum'][:-1] == "{{ kickstart_file.md5 }}"
+        - os_output['results'][0]['stdout'][0]['file_content_md5sum'][:-1] == "{{ os_file.md5 }}"
 
       rescue:
 
