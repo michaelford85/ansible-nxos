@@ -15,55 +15,31 @@
       nxos_facts:
 
     - name: Check whether correct OS is already installed
-      fail:
-        msg: "Nothing to upgrade"
+      debug:
+        msg: "Nothing to upgrade for {{ inventory_hostname }}"
       when: compliant_nxos_version == ansible_net_version
 
-   - name: Copy over nxos os image file
-     cli_command:
-       command: "copy scp://{{remote_user}}@{{remote_server}}/{{os_file}} bootflash/{{filename}} vrf {{management}}"
-       prompt:
-         - "{{username}}@"
-       answer:
-         - "{{scp_password}}"
+   - block:
+     - name: Copy over nxos os image file
+       cli_command:
+         command: "copy scp://{{remote_user}}@{{remote_server}}/{{os_file}} bootflash/{{filename}} vrf {{management}}"
+         prompt:
+           - "{{username}}@"
+         answer:
+           - "{{scp_password}}"
 
-   - name: Copy over nxos kickstart file
-     cli_command:
-       command: "copy scp://{{remote_user}}@{{remote_server}}/{{kickstart_file}} bootflash/{{filename}} vrf {{management}}"
-       prompt:
-         - "{{username}}@"
-       answer:
-         - "{{scp_password}}"
+     - name: Copy over nxos kickstart file
+       cli_command:
+         command: "copy scp://{{remote_user}}@{{remote_server}}/{{kickstart_file}} bootflash/{{filename}} vrf {{management}}"
+         prompt:
+           - "{{username}}@"
+         answer:
+           - "{{scp_password}}"
 
-
-    # - name: run multiple commands and evaluate the output
-    #   nxos_command:
-    #     commands:
-    #       - show install all impact kickstart n3500-uk9-kickstart.6.0.2.A8.10a.bin system n3500-uk9.6.0.2.A8.10a.bin
-    #   register: nxos_command_output
-
-    - name: Check MD5 Sum of os image file
-      nxos_command:
-        commands:
-          - "show file bootflash:{{os_file}} md5sum"
-      register: os_output
-
-    - name: Check MD5 Sum of kickstart file
-      nxos_command:
-        commands:
-          - "show file bootflash:{{kickstart_file}} md5sum"
-      register: kickstart_output
-
-    - block:
       - name: INSTALL NXOS OS
         nxos_install_os:
           system_image_file: n3500-uk9.6.0.2.A8.10a.bin
           kickstart_image_file: n3500-uk9-kickstart.6.0.2.A8.10a.bin
-      when:
-        - kickstart_output['results'][0]['stdout'][0]['file_content_md5sum'][:-1] == "{{ kickstart_file.md5 }}"
-        - os_output['results'][0]['stdout'][0]['file_content_md5sum'][:-1] == "{{ os_file.md5 }}"
-
-      rescue:
 
       - name: WAITING FOR DEVICE TO PERFORM ALL UPGRADE CHECKS AND STARTS REBOOT
         wait_for:
@@ -80,3 +56,13 @@
           timeout: 300
           delay: 60
           host: "{{ inventory_hostname }}"
+
+      when: compliant_nxos_version != ansible_net_version
+
+    - name: Gather switch facts
+      nxos_facts:
+
+    - name: VERIFY CURRENT VERSION IS EXPECTED VERSION
+      assert:
+        that:
+          - compliant_nxos_version == ansible_net_version
